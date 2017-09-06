@@ -1,5 +1,8 @@
 package org.b3log.jhosts;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -25,7 +29,7 @@ class FileUtil {
         }
     }
 
-    static void readHostFile(){
+    static ObservableMap readHostFile(){
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(getHostFile()));
             String line = bufferedReader.readLine();
@@ -33,8 +37,10 @@ class FileUtil {
                 System.out.println(line);
                 line = bufferedReader.readLine();
             }
+            return FXCollections.observableHashMap();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

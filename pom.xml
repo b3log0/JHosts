@@ -67,6 +67,11 @@
                 <artifactId>fontawesomefx</artifactId>
                 <version>8.4</version>
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.14</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -87,9 +92,9 @@
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>de.jensd</groupId>-->
-        <!--<artifactId>fontawesomefx-fontawesome</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 </project>

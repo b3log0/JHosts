@@ -25,8 +25,8 @@ public class Main extends Application {
     private ViewFlowContext flowContext;
 
     public static void main(String[] args){
-//        FileUtil.readHostFile();
-//        FileUtil.writeHostFile();
+//        FileServiceImpl.readHostFile();
+//        FileServiceImpl.writeHostFile();
         Main.launch(args);
     }
 
@@ -55,7 +55,7 @@ public class Main extends Application {
         decorator.setCustomMaximize(true);
 
         double width = 800;
-        double height = 600;
+        double height = 300;
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
             width = bounds.getWidth() / 2.5;

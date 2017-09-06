@@ -6,9 +6,9 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
            xmlns="http://javafx.com/javafx/2.2">
-    <AnchorPane maxWidth="500">
+    <AnchorPane fx:id="anchorPane">
         <JFXListView fx:id="hostGroup" styleClass="custom-jfx-list-view1"
-                     layoutX="50" layoutY="50">
+                     layoutX="10" layoutY="50">
         </JFXListView>
     </AnchorPane>
 </StackPane>

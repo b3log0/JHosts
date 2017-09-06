@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class Hosts {
+    private boolean flag;
     private String ipAddress;
     private String domainName;
 }

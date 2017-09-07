@@ -25,11 +25,9 @@ public class Main extends Application {
     private ViewFlowContext flowContext;
 
     public static void main(String[] args){
-//        FileServiceImpl.readHostFile();
-//        FileServiceImpl.writeHostFile();
 //        Main.launch(args);
         FileService fileService = new FileServiceImpl();
-        fileService.getAllHosts();
+        fileService.formatHostsFile();
     }
 
     private static final String GROUP = "组";

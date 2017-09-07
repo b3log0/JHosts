@@ -9,10 +9,10 @@
         <String fx:value="side-menu"/>
     </styleClass>
     <JFXListView fx:id="sideList">
-        <Label fx:id="profile0">All</Label>
-        <Label fx:id="profile1">Production Profile</Label>
-        <Label fx:id="profile2">UAT Profile</Label>
-        <Label fx:id="profile3">Test Profile</Label>
-        <Label fx:id="profile4">Local Profile</Label>
+        <Label fx:id="all">All</Label>
+        <Label fx:id="product">Production Profile</Label>
+        <Label fx:id="uat">UAT Profile</Label>
+        <Label fx:id="test">Test Profile</Label>
+        <Label fx:id="local">Local Profile</Label>
     </JFXListView>
 </StackPane>

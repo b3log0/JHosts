@@ -7,6 +7,7 @@ package org.b3log.jhosts;
  */
 public enum SystemEnum {
     LINUX("linux"),
+    MAC_OS_X("mac os x"),
     UNKOWN("?");
 
     SystemEnum(String system){
@@ -14,9 +15,9 @@ public enum SystemEnum {
     }
     private String system;
     public static SystemEnum getSystemEnum(String sys){
-        for(SystemEnum system : SystemEnum.values()){
-            if(system.name().equalsIgnoreCase(sys)){
-                return system;
+        for(SystemEnum se : SystemEnum.values()){
+            if(se.system.equalsIgnoreCase(sys)){
+                return se;
             }
         }
         return UNKOWN;

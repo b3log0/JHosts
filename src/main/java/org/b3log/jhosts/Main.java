@@ -12,6 +12,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.b3log.jhosts.controller.MainController;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 
@@ -20,13 +24,20 @@ import java.io.IOException;
  * Date: 17年9月6日
  * Email: yu.zhang@7fresh.com
  */
-public class Main extends Application {
+//@SpringBootApplication
+public class Main extends Application /*implements CommandLineRunner*/ {
     @FXMLViewFlowContext
     private ViewFlowContext flowContext;
 
     public static void main(String[] args){
+//        SpringApplication.run(Main.class,args);
         Main.launch(args);
     }
+
+//    @Override
+//    public void run(String... strings) throws Exception {
+//        Main.launch(strings);
+//    }
 
     private static final String GROUP = "组";
     private static final String IP_ADDRESS = "IP地址";
@@ -68,4 +79,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }

@@ -1,4 +1,4 @@
-package org.b3log.jhosts;
+package org.b3log.jhosts.controller;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.b3log.jhosts.controller.AllHostController;
 
 import javax.annotation.PostConstruct;
 

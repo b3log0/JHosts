@@ -1,4 +1,4 @@
-package org.b3log.jhosts;
+package org.b3log.jhosts.controller;
 
 import com.jfoenix.controls.JFXListView;
 import io.datafx.controller.ViewController;
@@ -13,16 +13,19 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import org.b3log.jhosts.controller.AllHostController;
+import org.b3log.jhosts.service.FileService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.Objects;
 
 @ViewController(value = "/hxml/ui/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {
     @FXMLViewFlowContext
     private ViewFlowContext context;
-
+    @Autowired
+    FileService fileService;
     //TODO 预设五种环境，这些host总会写入到同一个文件中，只不过右侧将对五中环境进行简化显示
     @FXML
     @ActionTrigger("all")

@@ -1,6 +1,10 @@
-package org.b3log.jhosts;
+package org.b3log.jhosts.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.b3log.jhosts.Host;
+import org.b3log.jhosts.SystemEnum;
+import org.b3log.jhosts.service.FileService;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,15 +31,17 @@ import java.util.stream.Collectors;
  * Date: 17年9月6日
  * Email: yu.zhang@7fresh.com
  */
-class FileServiceImpl implements FileService {
+@Service
+public class FileServiceImpl implements FileService {
     private final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
     private static String file;
-    private String file_bak = "/home/zephyr/Documents/hostsBak";
+    private String file_bak = "/Users/yaya/Documents/hostsBak";
 
-    FileServiceImpl() {
+    public FileServiceImpl() {
         if (StringUtils.isBlank(file)) { //TODO 待重构为springboot项目并使用参数配置
             switch (SystemEnum.getSystemEnum(System.getProperty("os.name"))) {
                 case LINUX:
+                case MAC_OS_X:
                     file = "/etc/hosts";
                     break;
             }
@@ -138,7 +144,7 @@ class FileServiceImpl implements FileService {
     public void writeHostFile(Map<String, Set<Host>> hostMap) {
         try {
             //TODO 此处路径为host路径，测试期间暂时不动
-            BufferedWriter out = new BufferedWriter(new FileWriter("/home/zephyr/Documents/hostsTest"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("/Users/yaya/Documents/hostsTest"));
             for (String group : hostMap.keySet()) {
                 out.write(MessageFormat.format("## {0}", group));
                 out.newLine();

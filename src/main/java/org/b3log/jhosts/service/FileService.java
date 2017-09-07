@@ -1,4 +1,6 @@
-package org.b3log.jhosts;
+package org.b3log.jhosts.service;
+
+import org.b3log.jhosts.Host;
 
 import java.util.List;
 import java.util.Map;

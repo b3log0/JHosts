@@ -44,7 +44,7 @@ class FileServiceImpl implements FileService {
 
     @Override
     public List<String> getGroup() {
-        return new ArrayList<>(getAllHostGroups().keySet());
+        return new ArrayList<>(getAllGroupHosts().keySet());
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import demos.datafx.ExtendedAnimatedFlowContainer;
-import demos.gui.uicomponents.ButtonController;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowHandler;
@@ -68,7 +67,7 @@ public final class MainController {
         // create the inner flow and content
         context = new ViewFlowContext();
         // set the default controller
-        Flow innerFlow = new Flow(ButtonController.class);
+        Flow innerFlow = new Flow(AllHostController.class);
 
         final FlowHandler flowHandler = innerFlow.createHandler(context);
         context.register("ContentFlowHandler", flowHandler);

@@ -52,8 +52,8 @@ public class Main extends Application {
         JFXDecorator decorator = new JFXDecorator(stage, container.getView());
         decorator.setCustomMaximize(true);
 
-        double width = 800;
-        double height = 300;
+        double width = 700;
+        double height = 200;
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
             width = bounds.getWidth() / 2.5;
@@ -64,7 +64,7 @@ public class Main extends Application {
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("/css/jfoenix-fonts.css").toExternalForm(),
                 Main.class.getResource("/css/jfoenix-design.css").toExternalForm(),
-                Main.class.getResource("/css/jfoenix-main-demo.css").toExternalForm());
+                Main.class.getResource("/css/jhosts-main.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

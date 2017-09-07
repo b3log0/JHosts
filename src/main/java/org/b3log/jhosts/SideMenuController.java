@@ -47,11 +47,11 @@ public class SideMenuController {
      */
     @PostConstruct
     public void init() {
-        FileService fileService = new FileServiceImpl();
+        /*FileService fileService = new FileServiceImpl();
         List<String> groupList = fileService.getGroup();
         for (String group : groupList) {
             sideList.getItems().add(new Label(group));
-        }
+        }*/
 
         Objects.requireNonNull(context, "context");
         FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");

@@ -1,5 +1,6 @@
 package org.b3log.jhosts;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * Email: yu.zhang@7fresh.com
  */
 @Data
+@Builder
 public class Hosts {
     private boolean flag;
     private String ipAddress;

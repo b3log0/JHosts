@@ -1,17 +1,15 @@
 package org.b3log.jhosts;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author: Zhang Yu
@@ -19,6 +17,7 @@ import java.util.*;
  * Email: yu.zhang@7fresh.com
  */
 class FileServiceImpl implements FileService{
+    private final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
 
     @Override
     public List<String> getGroup() {
@@ -42,8 +41,20 @@ class FileServiceImpl implements FileService{
     }
 
     @Override
-    public List<String> getAllHosts() {
-        return null;
+    public List<Hosts> getAllHosts() {
+        List<String> lines = readHostFile();
+        List<Hosts> hostsList = new ArrayList<>();
+        Pattern pattern = Pattern.compile(IP_ADDRESS_REG);
+        for(String line : lines){
+            Matcher m = pattern.matcher(line);
+            if (m.find()){
+                Boolean flag = !line.trim().startsWith("#");
+                String ipAddress = m.group();
+                String domainName = line.split("\\s+")[1]; //假定hosts文件格式是规范的（应当通过format进行初始化）
+                hostsList.add(Hosts.builder().flag(flag).ipAddress(ipAddress).domainName(domainName).build());
+            }
+        }
+        return hostsList;
     }
 
     @Override
@@ -60,22 +71,25 @@ class FileServiceImpl implements FileService{
         }
     }
 
-    private ObservableMap readHostFile(){
+    @Override
+    public List<String> readHostFile(){
+        List<String> result = new ArrayList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(getHostFile()));
             String line = bufferedReader.readLine();
             while(line!=null){
-                System.out.println(line);
+                result.add(line);
                 line = bufferedReader.readLine();
             }
-            return FXCollections.observableHashMap();
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private void writeHostFile(){
+    @Override
+    public void writeHostFile() {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(getHostFile(),"rw");
             long fileLenth = randomAccessFile.length();
@@ -86,6 +100,4 @@ class FileServiceImpl implements FileService{
             e.printStackTrace();
         }
     }
-
-
 }

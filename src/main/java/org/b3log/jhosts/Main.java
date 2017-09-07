@@ -27,7 +27,9 @@ public class Main extends Application {
     public static void main(String[] args){
 //        FileServiceImpl.readHostFile();
 //        FileServiceImpl.writeHostFile();
-        Main.launch(args);
+//        Main.launch(args);
+        FileService fileService = new FileServiceImpl();
+        fileService.getAllHosts();
     }
 
     private static final String GROUP = "组";

@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
+<?import com.jfoenix.svg.SVGGlyph?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
            xmlns="http://javafx.com/javafx/2.2">
     <VBox maxWidth="600" maxHeight="600" spacing="10">
@@ -33,6 +34,7 @@
             <JFXButton fx:id="reset" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Reset"
                        style="-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;"/>
         </HBox>
+        <SVGGlyph fx:id="glyph"/>
     </VBox>
 
     <JFXDialog fx:id="dialog">

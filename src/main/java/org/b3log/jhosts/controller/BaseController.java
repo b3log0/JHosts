@@ -10,7 +10,6 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
@@ -29,6 +28,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.layout.StackPane;
 import org.apache.commons.lang3.StringUtils;
+import org.b3log.jhosts.GlyphViewer;
 import org.b3log.jhosts.Host;
 import org.b3log.jhosts.service.FileService;
 import org.b3log.jhosts.service.impl.FileServiceImpl;
@@ -46,6 +46,10 @@ public class BaseController {
     private static final String PREFIX = "( ";
     private static final String POSTFIX = " )";
     private static final String CONTENT_PANE = "ContentPane";
+    private final String svgFileName = "icomoon.svg";
+    private GlyphViewer glyphDetailViewer;
+    @FXML
+    private StackPane detailsContainer;
     // editable table view
     @FXMLViewFlowContext
     protected ViewFlowContext context;
@@ -74,17 +78,19 @@ public class BaseController {
     @FXML
     private JFXButton acceptButton;
 
-    private List<Host> oldHostList;
 
     /**
-     * init fxml when loaded.
+     * 只允许三种修改操作：
+     * 1. 激活或取消激活某一行
+     * 2. 删除一行
+     * 3. 添加一行
      */
     @PostConstruct
     public void init() {
-        this.oldHostList = new ArrayList<>();
         this.profile.setText(this.title);
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
+            //获取当前列表中的元素并提交保存
             List<Host> hostList = new ArrayList<>();
             for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
                 FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
@@ -102,6 +108,8 @@ public class BaseController {
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
         acceptButton.setOnMouseClicked((e) -> dialog.close());
+        glyphDetailViewer = new GlyphViewer();
+        detailsContainer.getChildren().add(glyphDetailViewer);
     }
 
     private <T> void setupCellValueFactory(JFXTreeTableColumn<FXHost, T> column, Function<FXHost, ObservableValue<T>> mapper) {
@@ -155,7 +163,6 @@ public class BaseController {
         return (o, oldVal, newVal) ->
                 tableView.setPredicate(hostProp -> {
                     final FXHost host = hostProp.getValue();
-                    oldHostList.add(new Host(host.enableProperty().getValue(),host.ipAddressProperty().getValue(),host.domainNameProperty().getValue()));
                     return host.ipAddress.get().contains(newVal)
                             || host.domainName.get().contains(newVal);
                 });

@@ -112,7 +112,7 @@ public class FileServiceImpl implements FileService {
                 Boolean flag = !lines.get(i).trim().startsWith("#");
                 String ipAddress = m.group();
                 String domainName = lines.get(i).split("\\s+")[1]; //假定hosts文件格式是规范的（应当通过format进行初始化）
-                hostsList.add(Host.builder().flag(flag).ipAddress(ipAddress).domainName(domainName).build());
+                hostsList.add(Host.builder().enable(flag).ipAddress(ipAddress).domainName(domainName).build());
             }
         }
         return hostsList;
@@ -151,7 +151,7 @@ public class FileServiceImpl implements FileService {
                 out.write(MessageFormat.format("## {0}", group));
                 out.newLine();
                 for (Host host : hostMap.get(group)) {
-                    out.write(MessageFormat.format("{0}{1} {2}", host.isFlag() ? "" : "#", host.getIpAddress(), host.getDomainName()));
+                    out.write(MessageFormat.format("{0}{1} {2}", host.isEnable() ? "" : "#", host.getIpAddress(), host.getDomainName()));
                     out.newLine();
                 }
                 out.newLine();
@@ -163,12 +163,19 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-
-    public void testWrite(List<Host> hostList){
+    public void writeToHostFile(List<Host> hostList){
         try {
+            List<Host> allHostList = getAllHosts();
+            for(Host host : hostList){
+                if(allHostList.contains(host)){
+                    allHostList.get(allHostList.indexOf(host)).setEnable(host.isEnable());
+                    allHostList.get(allHostList.indexOf(host)).setIpAddress(host.getIpAddress());
+                    allHostList.get(allHostList.indexOf(host)).setDomainName(host.getDomainName());
+                }
+            }
             BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
-            for(Host host: hostList){
-                out.write(MessageFormat.format("{0} {1}",host.getIpAddress(),host.getDomainName()));
+            for(Host host: allHostList){
+                out.write(MessageFormat.format("{0}{1} {2}",host.isEnable()?"":"#",host.getIpAddress(),host.getDomainName()));
                 out.newLine();
             }
             out.close();

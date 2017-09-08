@@ -10,10 +10,13 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -71,11 +74,14 @@ public class BaseController {
     @FXML
     private JFXButton acceptButton;
 
+    private List<Host> oldHostList;
+
     /**
      * init fxml when loaded.
      */
     @PostConstruct
     public void init() {
+        this.oldHostList = new ArrayList<>();
         this.profile.setText(this.title);
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
@@ -87,7 +93,7 @@ public class BaseController {
                 host.setDomainName(fxHost.domainName.getValue());
                 hostList.add(host);
             }
-            this.fileService.testWrite(hostList);
+            this.fileService.writeToHostFile(hostList);
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
@@ -149,6 +155,7 @@ public class BaseController {
         return (o, oldVal, newVal) ->
                 tableView.setPredicate(hostProp -> {
                     final FXHost host = hostProp.getValue();
+                    oldHostList.add(new Host(host.enableProperty().getValue(),host.ipAddressProperty().getValue(),host.domainNameProperty().getValue()));
                     return host.ipAddress.get().contains(newVal)
                             || host.domainName.get().contains(newVal);
                 });
@@ -160,7 +167,7 @@ public class BaseController {
         this.count = allHosts.size();
         ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
         for (Host host : allHosts) {
-            fxHosts.add(new FXHost(host.getIpAddress(), host.getDomainName()));
+            fxHosts.add(new FXHost(host.isEnable(),host.getIpAddress(), host.getDomainName()));
         }
         return fxHosts;
     }
@@ -169,12 +176,18 @@ public class BaseController {
      * data class
      */
     static final class FXHost extends RecursiveTreeObject<FXHost> {
+        final BooleanProperty enable;
         final StringProperty ipAddress;
         final StringProperty domainName;
 
-        FXHost(String ipAddress, String domainName) {
+        FXHost(Boolean enable, String ipAddress, String domainName) {
+            this.enable = new SimpleBooleanProperty(enable);
             this.ipAddress = new SimpleStringProperty(ipAddress);
             this.domainName = new SimpleStringProperty(domainName);
+        }
+
+        BooleanProperty enableProperty() {
+            return enable;
         }
 
         StringProperty ipAddressProperty() {

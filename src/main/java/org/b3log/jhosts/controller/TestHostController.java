@@ -23,7 +23,7 @@ public class TestHostController extends BaseController {
         this.count = allHosts.size();
         ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
         for (Host host : allHosts) {
-            fxHosts.add(new FXHost(host.getIpAddress(), host.getDomainName()));
+            fxHosts.add(new FXHost(host.isEnable(),host.getIpAddress(), host.getDomainName()));
         }
         return fxHosts;
     }

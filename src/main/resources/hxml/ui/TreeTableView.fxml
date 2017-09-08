@@ -11,19 +11,19 @@
                 <Label fx:id="profile" styleClass="title-label">All Hosts</Label>
                 <JFXButton fx:id="hostAdd" buttonType="FLAT" text="+"/>
                 <JFXButton fx:id="hostRemove" buttonType="FLAT" text="-"/>
-                <Label styleClass="title-label" fx:id="hostsCount"></Label>
+                <Label styleClass="title-label" fx:id="hostsCount"/>
                 <StackPane HBox.hgrow="ALWAYS">
                     <StackPane StackPane.alignment="CENTER_RIGHT" maxWidth="200">
-                        <JFXTextField fx:id="hostSearch" promptText="Search..."></JFXTextField>
+                        <JFXTextField fx:id="hostSearch" promptText="Search..."/>
                     </StackPane>
                 </StackPane>
             </HBox>
             <JFXTreeTableView fx:id="hostsDataTable">
                 <columns>
                     <JFXTreeTableColumn fx:id="hostIpAddress"
-                                        text="First Name" minWidth="280" resizable="false"></JFXTreeTableColumn>
+                                        text="First Name" minWidth="280" resizable="false"/>
                     <JFXTreeTableColumn fx:id="hostDomainName"
-                                        text="Last Name" minWidth="280" resizable="false"></JFXTreeTableColumn>
+                                        text="Last Name" minWidth="280" resizable="false"/>
                 </columns>
             </JFXTreeTableView>
         </children>

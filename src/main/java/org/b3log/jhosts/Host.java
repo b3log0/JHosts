@@ -15,7 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Host {
-    private boolean flag;
+    private boolean enable;
     private String ipAddress;
     private String domainName;
+
+    @Override
+    public boolean equals(Object obj) {
+        Host host = (Host) obj;
+        if (this.ipAddress.equals(host.ipAddress) && this.domainName.equalsIgnoreCase(host.domainName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

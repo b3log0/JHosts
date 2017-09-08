@@ -22,6 +22,6 @@ public interface FileService {
     String readHostFile();
 
     void writeHostFile(Map<String, Set<Host>> hostMap);
-    void testWrite(List<Host> hostList);
+    void writeToHostFile(List<Host> hostList);
 //    void writeHostFile(String path);
 }

@@ -42,14 +42,14 @@ public class Main extends Application /*implements CommandLineRunner*/ {
 
     @Override
     public void start(Stage stage) throws Exception {
-        new Thread(() -> {
-            try {
-                SVGGlyphLoader.loadGlyphsFont(Main.class.getResourceAsStream("/fonts/icomoon.svg"),
-                        "icomoon.svg");
-            } catch (IOException ioExc) {
-                ioExc.printStackTrace();
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                SVGGlyphLoader.loadGlyphsFont(Main.class.getResourceAsStream("/fonts/icomoon.svg"),
+//                        "icomoon.svg");
+//            } catch (IOException ioExc) {
+//                ioExc.printStackTrace();
+//            }
+//        }).start();
 
         Flow flow = new Flow(MainController.class);
         DefaultFlowContainer container = new DefaultFlowContainer();

@@ -10,6 +10,9 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.svg.SVGGlyph;
+import com.jfoenix.svg.SVGGlyphLoader;
+import demos.gui.uicomponents.SVGLoaderController;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
@@ -27,13 +30,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import org.apache.commons.lang3.StringUtils;
 import org.b3log.jhosts.GlyphViewer;
 import org.b3log.jhosts.Host;
 import org.b3log.jhosts.service.FileService;
 import org.b3log.jhosts.service.impl.FileServiceImpl;
+import org.b3log.jhosts.util.GlyphSet;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -47,9 +53,6 @@ public class BaseController {
     private static final String POSTFIX = " )";
     private static final String CONTENT_PANE = "ContentPane";
     private final String svgFileName = "icomoon.svg";
-    private GlyphViewer glyphDetailViewer;
-    @FXML
-    private StackPane detailsContainer;
     // editable table view
     @FXMLViewFlowContext
     protected ViewFlowContext context;
@@ -67,6 +70,8 @@ public class BaseController {
     private JFXButton hostRemove;
     @FXML
     private Label hostsCount;
+    @FXML
+    private Label dialogLabel;
     @FXML
     private JFXTextField hostSearch;
     @FXML
@@ -88,18 +93,29 @@ public class BaseController {
     @PostConstruct
     public void init() {
         this.profile.setText(this.title);
+        //TODO 行可以放Label，label可以设置Graphic
+        SVGGlyph restGlyph = GlyphSet.getGlyph("repeat",Color.WHITE);
+        restGlyph.setSize(20, 20);
+        reset.setGraphic(restGlyph);
+        SVGGlyph saveGlyph = GlyphSet.getGlyph("save",Color.WHITE);
+        saveGlyph.setSize(20,20);
+        save.setGraphic(saveGlyph);
+        SVGGlyph labelGlyph = GlyphSet.getGlyph("test",Color.BLACK);
+        labelGlyph.setSize(20,20);
+        dialogLabel.setText("");
+        dialogLabel.setGraphic(labelGlyph);
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
             //获取当前列表中的元素并提交保存
-            List<Host> hostList = new ArrayList<>();
-            for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
-                FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
-                Host host = new Host();
-                host.setIpAddress(fxHost.ipAddress.getValue());
-                host.setDomainName(fxHost.domainName.getValue());
-                hostList.add(host);
-            }
-            this.fileService.writeToHostFile(hostList);
+//            List<Host> hostList = new ArrayList<>();
+//            for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
+//                FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
+//                Host host = new Host();
+//                host.setIpAddress(fxHost.ipAddress.getValue());
+//                host.setDomainName(fxHost.domainName.getValue());
+//                hostList.add(host);
+//            }
+//            this.fileService.writeToHostFile(hostList);
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
@@ -108,8 +124,6 @@ public class BaseController {
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
         acceptButton.setOnMouseClicked((e) -> dialog.close());
-        glyphDetailViewer = new GlyphViewer();
-        detailsContainer.getChildren().add(glyphDetailViewer);
     }
 
     private <T> void setupCellValueFactory(JFXTreeTableColumn<FXHost, T> column, Function<FXHost, ObservableValue<T>> mapper) {

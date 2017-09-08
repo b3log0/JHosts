@@ -34,13 +34,12 @@
             <JFXButton fx:id="reset" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Reset"
                        style="-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;"/>
         </HBox>
-        <SVGGlyph fx:id="glyph"/>
     </VBox>
 
     <JFXDialog fx:id="dialog">
         <JFXDialogLayout>
             <heading>
-                <Label>JFoenix Dialog</Label>
+                <Label fx:id="dialogLabel">JFoenix Dialog</Label>
             </heading>
             <body>
                 <Label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed

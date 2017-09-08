@@ -1,28 +1,30 @@
 package org.b3log.jhosts.controller;
 
-import com.jfoenix.controls.JFXListView;
 import io.datafx.controller.ViewController;
-import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.b3log.jhosts.Host;
 import org.b3log.jhosts.service.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.b3log.jhosts.service.impl.FileServiceImpl;
 
-import javax.annotation.PostConstruct;
+import java.util.List;
 
-@ViewController(value = "/hxml/ui/ListView.fxml", title = "Material Design Example")
-public class ProdHostController{
-    @FXML
-    protected JFXListView<?> list1;
-    @FXML
-    protected JFXListView<?> subList;
+@ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
+public class ProdHostController extends BaseController {
+    public ProdHostController() {
+        super();
+        this.title = "Product Hosts";
+    }
 
-    @Autowired
-    FileService fileService;
-
-    /**
-     * init fxml when loaded.
-     */
-    @PostConstruct
-    public void init() {
-        list1.depthProperty().set(1);
+    @Override
+    ObservableList<FXHost> getLocalHosts() {
+        FileService fileService = new FileServiceImpl();
+        List<Host> allHosts = fileService.getAllHosts().subList(10, 50);
+        this.count = allHosts.size();
+        ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
+        for (Host host : allHosts) {
+            fxHosts.add(new FXHost(host.getIpAddress(), host.getDomainName()));
+        }
+        return fxHosts;
     }
 }

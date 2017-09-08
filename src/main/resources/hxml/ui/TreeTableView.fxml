@@ -8,47 +8,49 @@
     <VBox maxWidth="600" maxHeight="600" spacing="10">
         <children>
             <HBox alignment="CENTER">
-                <Label styleClass="title-label">Read Only Tree Table View</Label>
-                <Label styleClass="title-label" fx:id="treeTableViewCount" minWidth="80"></Label>
-                <JFXButton fx:id="treeTableViewAdd" buttonType="FLAT" text="+"/>
-                <JFXButton fx:id="treeTableViewRemove" buttonType="FLAT" text="-"/>
+                <Label fx:id="profile" styleClass="title-label">All Hosts</Label>
+                <JFXButton fx:id="hostAdd" buttonType="FLAT" text="+"/>
+                <JFXButton fx:id="hostRemove" buttonType="FLAT" text="-"/>
+                <Label styleClass="title-label" fx:id="hostsCount"></Label>
                 <StackPane HBox.hgrow="ALWAYS">
                     <StackPane StackPane.alignment="CENTER_RIGHT" maxWidth="200">
-                        <JFXTextField fx:id="searchField" promptText="Search..."></JFXTextField>
+                        <JFXTextField fx:id="hostSearch" promptText="Search..."></JFXTextField>
                     </StackPane>
                 </StackPane>
             </HBox>
-            <JFXTreeTableView fx:id="treeTableView">
+            <JFXTreeTableView fx:id="hostsDataTable">
                 <columns>
-                    <JFXTreeTableColumn fx:id="firstNameColumn"
-                                        minWidth="133" text="First Name" prefWidth="133"
-                                        resizable="false"></JFXTreeTableColumn>
-                    <JFXTreeTableColumn fx:id="lastNameColumn" text="Last Name"
-                                        minWidth="133" resizable="false"></JFXTreeTableColumn>
-                    <JFXTreeTableColumn fx:id="ageColumn" text="Age"
-                                        minWidth="133" resizable="false"></JFXTreeTableColumn>
-                </columns>
-            </JFXTreeTableView>
-
-            <HBox alignment="CENTER">
-                <Label styleClass="title-label">Editable Tree Table View</Label>
-                <Label styleClass="title-label" fx:id="editableTreeTableViewCount"></Label>
-                <StackPane HBox.hgrow="ALWAYS">
-                    <StackPane StackPane.alignment="CENTER_RIGHT" maxWidth="200">
-                        <JFXTextField fx:id="searchField2" promptText="Search..."></JFXTextField>
-                    </StackPane>
-                </StackPane>
-            </HBox>
-            <JFXTreeTableView fx:id="editableTreeTableView">
-                <columns>
-                    <JFXTreeTableColumn fx:id="firstNameEditableColumn"
-                                        text="First Name" minWidth="133" resizable="false"></JFXTreeTableColumn>
-                    <JFXTreeTableColumn fx:id="lastNameEditableColumn"
-                                        text="Last Name" minWidth="133" resizable="false"></JFXTreeTableColumn>
-                    <JFXTreeTableColumn fx:id="ageEditableColumn"
-                                        text="Age" minWidth="133" resizable="false"></JFXTreeTableColumn>
+                    <JFXTreeTableColumn fx:id="hostIpAddress"
+                                        text="First Name" minWidth="280" resizable="false"></JFXTreeTableColumn>
+                    <JFXTreeTableColumn fx:id="hostDomainName"
+                                        text="Last Name" minWidth="280" resizable="false"></JFXTreeTableColumn>
                 </columns>
             </JFXTreeTableView>
         </children>
+        <HBox spacing="40" style="-fx-padding: 0 0 0 50;">
+            <JFXButton fx:id="save" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Save"
+                       style="-fx-font-size:14px;-fx-text-fill:WHITE;-fx-background-color:#5264AE;"/>
+            <JFXButton fx:id="reset" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Reset"
+                       style="-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;"/>
+        </HBox>
     </VBox>
+
+    <JFXDialog fx:id="dialog">
+        <JFXDialogLayout>
+            <heading>
+                <Label>JFoenix Dialog</Label>
+            </heading>
+            <body>
+                <Label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.
+                </Label>
+            </body>
+            <actions>
+                <JFXButton fx:id="acceptButton" styleClass="dialog-accept">ACCEPT
+                </JFXButton>
+            </actions>
+        </JFXDialogLayout>
+    </JFXDialog>
 </StackPane>

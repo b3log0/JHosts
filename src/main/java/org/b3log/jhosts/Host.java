@@ -1,7 +1,9 @@
 package org.b3log.jhosts;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Author: Zhang Yu
@@ -10,6 +12,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Host {
     private boolean flag;
     private String ipAddress;

@@ -35,14 +35,18 @@ import java.util.stream.Collectors;
 public class FileServiceImpl implements FileService {
     private final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
     private static String file;
-    private String file_bak = "/Users/yaya/Documents/hostsBak";
+    private String file_bak = "/home/zephyr/Documents/hostsBak";
+    private String filepath;
 
     public FileServiceImpl() {
         if (StringUtils.isBlank(file)) { //TODO 待重构为springboot项目并使用参数配置
             switch (SystemEnum.getSystemEnum(System.getProperty("os.name"))) {
                 case LINUX:
+                    file = "/etc/hosts";
+                    filepath = "/home/zephyr/Documents/hostTest";
                 case MAC_OS_X:
                     file = "/etc/hosts";
+                    filepath="/Users/yaya/Documents/hostTesst";
                     break;
             }
         }
@@ -143,8 +147,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public void writeHostFile(Map<String, Set<Host>> hostMap) {
         try {
-            //TODO 此处路径为host路径，测试期间暂时不动
-            BufferedWriter out = new BufferedWriter(new FileWriter("/Users/yaya/Documents/hostsTest"));
+            BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
             for (String group : hostMap.keySet()) {
                 out.write(MessageFormat.format("## {0}", group));
                 out.newLine();
@@ -152,6 +155,20 @@ public class FileServiceImpl implements FileService {
                     out.write(MessageFormat.format("{0}{1} {2}", host.isFlag() ? "" : "#", host.getIpAddress(), host.getDomainName()));
                     out.newLine();
                 }
+                out.newLine();
+            }
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void testWrite(List<Host> hostList){
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
+            for(Host host: hostList){
+                out.write(MessageFormat.format("{0} {1}",host.getIpAddress(),host.getDomainName()));
                 out.newLine();
             }
             out.close();

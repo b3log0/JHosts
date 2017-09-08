@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.layout.StackPane;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.jhosts.Host;
 import org.b3log.jhosts.service.FileService;
 import org.b3log.jhosts.service.impl.FileServiceImpl;
@@ -37,7 +38,7 @@ import java.util.function.Function;
 @ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
 public class BaseController {
     protected String title = "Default Hosts";
-    protected int count = 0;
+    protected volatile int count = 0;
     protected FileService fileService = new FileServiceImpl();
     private static final String PREFIX = "( ";
     private static final String POSTFIX = " )";
@@ -79,11 +80,11 @@ public class BaseController {
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
             List<Host> hostList = new ArrayList<>();
-            int i;
-            for (i = 0; i < hostsDataTable.getCurrentItemsCount(); i++) {
+            for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
+                FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
                 Host host = new Host();
-                host.setIpAddress(hostDomainName.getTreeTableView().getTreeItem(i).getValue().ipAddress.getValue());
-                host.setDomainName(hostDomainName.getTreeTableView().getTreeItem(i).getValue().domainName.getValue());
+                host.setIpAddress(fxHost.ipAddress.getValue());
+                host.setDomainName(fxHost.domainName.getValue());
                 hostList.add(host);
             }
             this.fileService.testWrite(hostList);

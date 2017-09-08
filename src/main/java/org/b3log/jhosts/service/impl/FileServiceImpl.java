@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.b3log.jhosts.Host;
 import org.b3log.jhosts.SystemEnum;
 import org.b3log.jhosts.service.FileService;
-import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,12 +30,11 @@ import java.util.stream.Collectors;
  * Date: 17年9月6日
  * Email: yu.zhang@7fresh.com
  */
-@Service
 public class FileServiceImpl implements FileService {
     private final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
     private static String file;
-    private String file_bak = "/home/zephyr/Documents/hostsBak";
-    private String filepath;
+    private static String file_bak = "/home/zephyr/Documents/hostsBak";
+    private static String filepath;
 
     public FileServiceImpl() {
         if (StringUtils.isBlank(file)) { //TODO 待重构为springboot项目并使用参数配置
@@ -44,9 +42,10 @@ public class FileServiceImpl implements FileService {
                 case LINUX:
                     file = "/etc/hosts";
                     filepath = "/home/zephyr/Documents/hostTest";
+                    break;
                 case MAC_OS_X:
                     file = "/etc/hosts";
-                    filepath="/Users/yaya/Documents/hostTesst";
+                    filepath="/Users/yaya/Documents/hostTest";
                     break;
             }
         }
@@ -164,6 +163,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+
     public void testWrite(List<Host> hostList){
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filepath));

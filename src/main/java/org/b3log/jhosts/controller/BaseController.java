@@ -79,7 +79,8 @@ public class BaseController {
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
             List<Host> hostList = new ArrayList<>();
-            for(int i=0;i<this.count;i++){
+            int i;
+            for (i = 0; i < hostsDataTable.getCurrentItemsCount(); i++) {
                 Host host = new Host();
                 host.setIpAddress(hostDomainName.getTreeTableView().getTreeItem(i).getValue().ipAddress.getValue());
                 host.setDomainName(hostDomainName.getTreeTableView().getTreeItem(i).getValue().domainName.getValue());
@@ -152,13 +153,13 @@ public class BaseController {
                 });
     }
 
-    ObservableList<FXHost> getLocalHosts(){
+    ObservableList<FXHost> getLocalHosts() {
         FileService fileService = new FileServiceImpl();
         List<Host> allHosts = fileService.getAllHosts();
         this.count = allHosts.size();
         ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
-        for(Host host : allHosts){
-            fxHosts.add(new FXHost(host.getIpAddress(),host.getDomainName()));
+        for (Host host : allHosts) {
+            fxHosts.add(new FXHost(host.getIpAddress(), host.getDomainName()));
         }
         return fxHosts;
     }

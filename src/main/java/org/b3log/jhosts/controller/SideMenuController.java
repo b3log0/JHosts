@@ -13,9 +13,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import org.b3log.jhosts.controller.AllHostController;
 import org.b3log.jhosts.service.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
@@ -24,8 +22,6 @@ import java.util.Objects;
 public class SideMenuController {
     @FXMLViewFlowContext
     private ViewFlowContext context;
-    @Autowired
-    FileService fileService;
     //TODO 预设五种环境，这些host总会写入到同一个文件中，只不过右侧将对五中环境进行简化显示
     @FXML
     @ActionTrigger("all")
@@ -50,12 +46,6 @@ public class SideMenuController {
      */
     @PostConstruct
     public void init() {
-        /*FileService fileService = new FileServiceImpl();
-        List<String> groupList = fileService.getGroup();
-        for (String group : groupList) {
-            sideList.getItems().add(new Label(group));
-        }*/
-
         Objects.requireNonNull(context, "context");
         FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
         sideList.propagateMouseEventsToParent();

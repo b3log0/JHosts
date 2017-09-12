@@ -11,8 +11,6 @@ import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.svg.SVGGlyph;
-import com.jfoenix.svg.SVGGlyphLoader;
-import demos.gui.uicomponents.SVGLoaderController;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
@@ -27,29 +25,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import org.apache.commons.lang3.StringUtils;
-import org.b3log.jhosts.GlyphViewer;
 import org.b3log.jhosts.Host;
 import org.b3log.jhosts.service.FileService;
 import org.b3log.jhosts.service.impl.FileServiceImpl;
 import org.b3log.jhosts.util.GlyphSet;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 @ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
 public class BaseController {
@@ -59,7 +49,6 @@ public class BaseController {
     private static final String PREFIX = "( ";
     private static final String POSTFIX = " )";
     private static final String CONTENT_PANE = "ContentPane";
-    private final String svgFileName = "icomoon.svg";
     // editable table view
     @FXMLViewFlowContext
     protected ViewFlowContext context;
@@ -120,7 +109,7 @@ public class BaseController {
             for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
                 FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
                 Host host = new Host();
-                host.setEnable(fxHost.enableProperty().getValue());
+                host.setEnable(fxHost.enable.getValue());
                 host.setIpAddress(fxHost.ipAddress.getValue());
                 host.setDomainName(fxHost.domainName.getValue());
                 hostList.add(host);

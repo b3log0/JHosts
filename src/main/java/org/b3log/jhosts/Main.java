@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.b3log.jhosts.controller.MainController;
+import org.b3log.jhosts.service.FileService;
+import org.b3log.jhosts.service.impl.FileServiceImpl;
 
 import java.io.IOException;
 
@@ -26,8 +28,10 @@ public class Main extends Application /*implements CommandLineRunner*/ {
     @FXMLViewFlowContext
     private ViewFlowContext flowContext;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 //        SpringApplication.run(Main.class,args);
+        FileService fileService = new FileServiceImpl();
+        fileService.backupHostsFile();
         Main.launch(args);
     }
 
@@ -66,7 +70,8 @@ public class Main extends Application /*implements CommandLineRunner*/ {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
             width = bounds.getWidth() / 2.5;
             height = bounds.getHeight() / 1.35;
-        }catch (Exception e){ }
+        } catch (Exception e) {
+        }
 
         Scene scene = new Scene(decorator, width, height);
         final ObservableList<String> stylesheets = scene.getStylesheets();

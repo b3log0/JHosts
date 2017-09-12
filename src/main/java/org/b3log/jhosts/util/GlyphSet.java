@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
- * Created by yaya on 17-9-8.
+ * Created by Zephyr on 17-9-8.
  */
 public class GlyphSet {
     public static SVGGlyph getGlyph(String name, Paint fill) {

@@ -31,21 +31,22 @@ import java.util.stream.Collectors;
  * Email: yu.zhang@7fresh.com
  */
 public class FileServiceImpl implements FileService {
-    private final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
-    private static String file;
-    private static String file_bak = "/home/zephyr/Documents/hostsBak";
-    private static String filepath;
+    private static String host_file;
+    private static String host_bak;
+    private static String host_test;
 
     public FileServiceImpl() {
-        if (StringUtils.isBlank(file)) { //TODO 待重构为springboot项目并使用参数配置
+        if (StringUtils.isBlank(host_file)) { //TODO 待重构为springboot项目并使用参数配置
             switch (SystemEnum.getSystemEnum(System.getProperty("os.name"))) {
                 case LINUX:
-                    file = "/etc/hosts";
-                    filepath = "/home/zephyr/Documents/hostTest";
+                    host_file = "/etc/hosts";
+                    host_bak = "/home/zephyr/Documents/hostsBak";
+                    host_test = "/home/zephyr/Documents/hostTest";
                     break;
                 case MAC_OS_X:
-                    file = "/etc/hosts";
-                    filepath="/Users/yaya/Documents/hostTest";
+                    host_file = "/etc/hosts";
+                    host_bak = "/Users/yaya/Documents/hostsBak";
+                    host_test = "/Users/yaya/Documents/hostTest";
                     break;
             }
         }
@@ -105,6 +106,7 @@ public class FileServiceImpl implements FileService {
     public List<Host> getAllHosts() {
         List<String> lines = Arrays.stream(readHostFile().split("\\n+")).collect(Collectors.toList());
         List<Host> hostsList = new ArrayList<>();
+        final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
         Pattern pattern = Pattern.compile(IP_ADDRESS_REG);
         for (int i = 0; i < lines.size(); i++) {
             Matcher m = pattern.matcher(lines.get(i));
@@ -119,18 +121,21 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void formatHostsFile() {
+    public void backupHostsFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HHmmss");
-        this.file_bak += "." + dateFormat.format(new Date());
-        backUpHostFile(this.file_bak);
-        writeHostFile(getAllGroupHosts());
+        host_bak += "." + dateFormat.format(new Date());
+        backUpHostFile(host_bak);
     }
 
+    /**
+     * 读取host文件，总是读取真正的host文件
+     * @return
+     */
     @Override
     public String readHostFile() {
         StringBuilder result = new StringBuilder();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(host_file));
             String line = bufferedReader.readLine();
             while (line != null) {
                 result.append(line + "\n");
@@ -143,10 +148,15 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    /**
+     * 根据分组写host文件
+     * 组名单独作为一行
+     * @param hostMap
+     */
     @Override
     public void writeHostFile(Map<String, Set<Host>> hostMap) {
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
+            BufferedWriter out = new BufferedWriter(new FileWriter(host_test));
             for (String group : hostMap.keySet()) {
                 out.write(MessageFormat.format("## {0}", group));
                 out.newLine();
@@ -163,19 +173,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void writeToHostFile(List<Host> hostList){
+    public void writeToHostFile(List<Host> hostList) {
         try {
-            List<Host> allHostList = getAllHosts();
-            for(Host host : hostList){
-                if(allHostList.contains(host)){
-                    allHostList.get(allHostList.indexOf(host)).setEnable(host.isEnable());
-                    allHostList.get(allHostList.indexOf(host)).setIpAddress(host.getIpAddress());
-                    allHostList.get(allHostList.indexOf(host)).setDomainName(host.getDomainName());
-                }
-            }
-            BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
-            for(Host host: allHostList){
-                out.write(MessageFormat.format("{0}{1} {2}",host.isEnable()?"":"#",host.getIpAddress(),host.getDomainName()));
+            BufferedWriter out = new BufferedWriter(new FileWriter(host_file));
+            for (Host host : hostList) {
+                out.write(MessageFormat.format("{0}{1} {2}", host.isEnable() ? "" : "#", host.getIpAddress(), host.getDomainName()));
                 out.newLine();
             }
             out.close();

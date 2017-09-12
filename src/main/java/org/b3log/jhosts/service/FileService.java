@@ -18,7 +18,7 @@ public interface FileService {
 
     Map<String, Set<Host>> getAllHostGroups();
 
-    List<Host> getAllHosts();
+    Map<String, Host> getAllHosts();
 
     String readHostFile();
 
@@ -26,5 +26,5 @@ public interface FileService {
 
     void writeHostFile(Map<String, Set<Host>> hostMap);
 
-    void writeToHostFile(List<Host> hostList);
+    void writeToHostFile(Map<String,Host> hostList);
 }

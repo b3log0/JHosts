@@ -37,15 +37,14 @@ import org.b3log.jhosts.service.impl.FileServiceImpl;
 import org.b3log.jhosts.util.GlyphSet;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
 public class BaseController {
     protected String title = "Default Hosts";
-    protected volatile int count = 0;
-    protected FileService fileService = new FileServiceImpl();
+    private FileService fileService = new FileServiceImpl();
     private static final String PREFIX = "( ";
     private static final String POSTFIX = " )";
     private static final String CONTENT_PANE = "ContentPane";
@@ -105,16 +104,16 @@ public class BaseController {
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
             //获取当前列表中的元素并提交保存
-            List<Host> hostList = new ArrayList<>();
+            Map<String, Host> hostMap = new HashMap<>();
             for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
                 FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
                 Host host = new Host();
                 host.setEnable(fxHost.enable.getValue());
                 host.setIpAddress(fxHost.ipAddress.getValue());
                 host.setDomainName(fxHost.domainName.getValue());
-                hostList.add(host);
+                hostMap.put(fxHost.getId(),host);
             }
-            this.fileService.writeToHostFile(hostList);
+            this.fileService.writeToHostFile(hostMap);
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
@@ -197,11 +196,10 @@ public class BaseController {
 
     ObservableList<FXHost> getLocalHosts() {
         FileService fileService = new FileServiceImpl();
-        List<Host> allHosts = fileService.getAllHosts();
-        this.count = allHosts.size();
+        Map<String, Host> allHosts = fileService.getAllHosts();
         ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
-        for (Host host : allHosts) {
-            fxHosts.add(new FXHost(host.isEnable(), host.getIpAddress(), host.getDomainName()));
+        for (String uuid : allHosts.keySet()) {
+            fxHosts.add(new FXHost(uuid, allHosts.get(uuid).isEnable(), allHosts.get(uuid).getIpAddress(), allHosts.get(uuid).getDomainName()));
         }
         return fxHosts;
     }
@@ -210,14 +208,20 @@ public class BaseController {
      * data class
      */
     static final class FXHost extends RecursiveTreeObject<FXHost> {
+        final String id;
         final BooleanProperty enable;
         final StringProperty ipAddress;
         final StringProperty domainName;
 
-        FXHost(Boolean enable, String ipAddress, String domainName) {
+        FXHost(String id, Boolean enable, String ipAddress, String domainName) {
+            this.id = id;
             this.enable = new SimpleBooleanProperty(enable);
             this.ipAddress = new SimpleStringProperty(ipAddress);
             this.domainName = new SimpleStringProperty(domainName);
+        }
+
+        String getId() {
+            return id;
         }
 
         BooleanProperty enableProperty() {

@@ -69,9 +69,9 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public Map<String, Set<Host>> getAllGroupHosts() {
-        List<Host> hostsList = getAllHosts();
+        Map<String,Host> hostsList = getAllHosts();
         Map<String, Set<Host>> hostsMap = new HashMap<>();
-        for (Host host : hostsList) {
+        for (Host host : hostsList.values()) {
             if (hostsMap.get(host.getDomainName()) != null) {
                 hostsMap.get(host.getDomainName()).add(host);
             } else {
@@ -89,9 +89,9 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public Map<String, Set<Host>> getAllHostGroups() {
-        List<Host> hostsList = getAllHosts();
+        Map<String,Host> hostsList = getAllHosts();
         Map<String, Set<Host>> hostsMap = new HashMap<>();
-        for (Host host : hostsList) {
+        for (Host host : hostsList.values()) {
             if (hostsMap.get(host.getIpAddress()) != null) {
                 hostsMap.get(host.getIpAddress()).add(host);
             } else {
@@ -103,9 +103,9 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<Host> getAllHosts() {
+    public Map<String, Host> getAllHosts() {
         List<String> lines = Arrays.stream(readHostFile().split("\\n+")).collect(Collectors.toList());
-        List<Host> hostsList = new ArrayList<>();
+        Map<String, Host> hostsList = new HashMap<>();
         final String IP_ADDRESS_REG = "[0-9]+.[0-9]+.[0-9]+.[0-9]+";
         Pattern pattern = Pattern.compile(IP_ADDRESS_REG);
         for (int i = 0; i < lines.size(); i++) {
@@ -114,7 +114,9 @@ public class FileServiceImpl implements FileService {
                 Boolean flag = !lines.get(i).trim().startsWith("#");
                 String ipAddress = m.group();
                 String domainName = lines.get(i).split("\\s+")[1]; //假定hosts文件格式是规范的（应当通过format进行初始化）
-                hostsList.add(Host.builder().enable(flag).ipAddress(ipAddress).domainName(domainName).build());
+                //此处的序号应当在多次读取时保证一致
+                //修改后，应当能根据提供的行号，在此处找到原处
+                hostsList.put(String.valueOf(i),Host.builder().enable(flag).ipAddress(ipAddress).domainName(domainName).build());
             }
         }
         return hostsList;
@@ -129,6 +131,7 @@ public class FileServiceImpl implements FileService {
 
     /**
      * 读取host文件，总是读取真正的host文件
+     *
      * @return
      */
     @Override
@@ -151,11 +154,12 @@ public class FileServiceImpl implements FileService {
     /**
      * 根据分组写host文件
      * 组名单独作为一行
+     *
      * @param hostMap
      */
     @Override
     public void writeHostFile(Map<String, Set<Host>> hostMap) {
-        try {
+        /*try {
             BufferedWriter out = new BufferedWriter(new FileWriter(host_test));
             for (String group : hostMap.keySet()) {
                 out.write(MessageFormat.format("## {0}", group));
@@ -169,14 +173,18 @@ public class FileServiceImpl implements FileService {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
-    public void writeToHostFile(List<Host> hostList) {
+    public void writeToHostFile(Map<String,Host> hostList) {
         try {
+            Map<String,Host> allHosts = getAllHosts();
             BufferedWriter out = new BufferedWriter(new FileWriter(host_file));
-            for (Host host : hostList) {
+            for (String line : hostList.keySet()) {
+                allHosts.put(line,hostList.get(line));
+            }
+            for(Host host : allHosts.values()){
                 out.write(MessageFormat.format("{0}{1} {2}", host.isEnable() ? "" : "#", host.getIpAddress(), host.getDomainName()));
                 out.newLine();
             }

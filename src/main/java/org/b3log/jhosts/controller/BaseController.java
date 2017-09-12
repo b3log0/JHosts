@@ -74,7 +74,7 @@ public class BaseController {
     @FXML
     private JFXButton save;
     @FXML
-    private JFXButton reset;
+    private JFXButton backup;
     @FXML
     private JFXDialog dialog;
     @FXML
@@ -91,9 +91,10 @@ public class BaseController {
     public void init() {
         this.profile.setText(this.title);
         //TODO 行可以放Label，label可以设置Graphic
-        SVGGlyph restGlyph = GlyphSet.getGlyph("repeat", Color.WHITE);
+        SVGGlyph restGlyph = GlyphSet.getGlyph("download", Color.WHITE);
         restGlyph.setSize(20, 20);
-        reset.setGraphic(restGlyph);
+
+        backup.setGraphic(restGlyph);
         SVGGlyph saveGlyph = GlyphSet.getGlyph("save", Color.WHITE);
         saveGlyph.setSize(20, 20);
         save.setGraphic(saveGlyph);
@@ -117,7 +118,8 @@ public class BaseController {
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
-        reset.setOnMouseClicked((e) -> {
+        backup.setOnMouseClicked((e) -> {
+            fileService.backupHostsFile();
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });

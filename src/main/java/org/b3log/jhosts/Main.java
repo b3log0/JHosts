@@ -30,8 +30,6 @@ public class Main extends Application /*implements CommandLineRunner*/ {
 
     public static void main(String[] args) {
 //        SpringApplication.run(Main.class,args);
-        FileService fileService = new FileServiceImpl();
-        fileService.backupHostsFile();
         Main.launch(args);
     }
 

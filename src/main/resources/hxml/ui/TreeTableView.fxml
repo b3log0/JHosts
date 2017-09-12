@@ -32,7 +32,7 @@
         <HBox spacing="40" style="-fx-padding: 0 0 0 50;">
             <JFXButton fx:id="save" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Save"
                        style="-fx-font-size:14px;-fx-text-fill:WHITE;-fx-background-color:#5264AE;"/>
-            <JFXButton fx:id="reset" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Reset"
+            <JFXButton fx:id="backup" prefWidth="200" prefHeight="40" buttonType="RAISED" text="Backup"
                        style="-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;"/>
         </HBox>
     </VBox>

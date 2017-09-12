@@ -21,10 +21,11 @@
             </HBox>
             <JFXTreeTableView fx:id="hostsDataTable">
                 <columns>
+                    <JFXTreeTableColumn fx:id="enableFlag" minWidth="20" resizable="false" text="Enabled"/>
                     <JFXTreeTableColumn fx:id="hostIpAddress"
-                                        text="First Name" minWidth="280" resizable="false"/>
+                                        text="IP Address" minWidth="280" resizable="false"/>
                     <JFXTreeTableColumn fx:id="hostDomainName"
-                                        text="Last Name" minWidth="280" resizable="false"/>
+                                        text="Domain Name" minWidth="280" resizable="false"/>
                 </columns>
             </JFXTreeTableView>
         </children>

@@ -27,10 +27,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.apache.commons.lang3.StringUtils;
 import org.b3log.jhosts.GlyphViewer;
 import org.b3log.jhosts.Host;
@@ -43,6 +48,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 @ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
 public class BaseController {
@@ -64,6 +71,8 @@ public class BaseController {
     private JFXTreeTableColumn<FXHost, String> hostIpAddress;
     @FXML
     private JFXTreeTableColumn<FXHost, String> hostDomainName;
+    @FXML
+    private JFXTreeTableColumn<FXHost, Boolean> enableFlag;
     @FXML
     private JFXButton hostAdd;
     @FXML
@@ -94,28 +103,29 @@ public class BaseController {
     public void init() {
         this.profile.setText(this.title);
         //TODO 行可以放Label，label可以设置Graphic
-        SVGGlyph restGlyph = GlyphSet.getGlyph("repeat",Color.WHITE);
+        SVGGlyph restGlyph = GlyphSet.getGlyph("repeat", Color.WHITE);
         restGlyph.setSize(20, 20);
         reset.setGraphic(restGlyph);
-        SVGGlyph saveGlyph = GlyphSet.getGlyph("save",Color.WHITE);
-        saveGlyph.setSize(20,20);
+        SVGGlyph saveGlyph = GlyphSet.getGlyph("save", Color.WHITE);
+        saveGlyph.setSize(20, 20);
         save.setGraphic(saveGlyph);
-        SVGGlyph labelGlyph = GlyphSet.getGlyph("test",Color.BLACK);
-        labelGlyph.setSize(20,20);
+        SVGGlyph labelGlyph = GlyphSet.getGlyph("test", Color.BLACK);
+        labelGlyph.setSize(20, 20);
         dialogLabel.setText("");
         dialogLabel.setGraphic(labelGlyph);
         setupEditableTableView();
         save.setOnMouseClicked((e) -> {
             //获取当前列表中的元素并提交保存
-//            List<Host> hostList = new ArrayList<>();
-//            for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
-//                FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
-//                Host host = new Host();
-//                host.setIpAddress(fxHost.ipAddress.getValue());
-//                host.setDomainName(fxHost.domainName.getValue());
-//                hostList.add(host);
-//            }
-//            this.fileService.writeToHostFile(hostList);
+            List<Host> hostList = new ArrayList<>();
+            for (int i = 0; i < Integer.parseInt(StringUtils.substringBetween(hostsCount.getText(), PREFIX, POSTFIX)); i++) {
+                FXHost fxHost = hostDomainName.getTreeTableView().getTreeItem(i).getValue();
+                Host host = new Host();
+                host.setEnable(fxHost.enableProperty().getValue());
+                host.setIpAddress(fxHost.ipAddress.getValue());
+                host.setDomainName(fxHost.domainName.getValue());
+                hostList.add(host);
+            }
+            this.fileService.writeToHostFile(hostList);
             dialog.setTransitionType(DialogTransition.TOP);
             dialog.show((StackPane) context.getRegisteredObject(CONTENT_PANE));
         });
@@ -138,30 +148,44 @@ public class BaseController {
 
     private void setupEditableTableView() {
         setupCellValueFactory(hostIpAddress, FXHost::ipAddressProperty);
+        setupCellValueFactory(enableFlag, FXHost::enableProperty);
         setupCellValueFactory(hostDomainName, FXHost::domainNameProperty);
 
         // add editors
-        hostIpAddress.setCellFactory((TreeTableColumn<FXHost, String> param) -> {
-            return new GenericEditableTreeTableCell<>(
-                    new TextFieldEditorBuilder());
-        });
-        hostIpAddress.setOnEditCommit((CellEditEvent<FXHost, String> t) -> {
-            t.getTreeTableView()
-                    .getTreeItem(t.getTreeTablePosition()
-                            .getRow())
-                    .getValue().ipAddress.set(t.getNewValue());
-        });
-        hostDomainName.setCellFactory((TreeTableColumn<FXHost, String> param) -> {
-            return new GenericEditableTreeTableCell<>(
-                    new TextFieldEditorBuilder());
-        });
-        hostDomainName.setOnEditCommit((CellEditEvent<FXHost, String> t) -> {
-            t.getTreeTableView()
-                    .getTreeItem(t.getTreeTablePosition()
-                            .getRow())
-                    .getValue().domainName.set(t.getNewValue());
-        });
-
+        hostIpAddress.setCellFactory((TreeTableColumn<FXHost, String> param) ->
+                new GenericEditableTreeTableCell<>(
+                        new TextFieldEditorBuilder()
+                )
+        );
+        hostIpAddress.setOnEditCommit((CellEditEvent<FXHost, String> t) ->
+                t.getTreeTableView().getTreeItem(
+                        t.getTreeTablePosition().getRow()
+                ).getValue().ipAddress.set(
+                        t.getNewValue()
+                )
+        );
+        hostDomainName.setCellFactory((TreeTableColumn<FXHost, String> param) ->
+                new GenericEditableTreeTableCell<>(
+                        new TextFieldEditorBuilder()
+                )
+        );
+        hostDomainName.setOnEditCommit((CellEditEvent<FXHost, String> t) ->
+                t.getTreeTableView().getTreeItem(
+                        t.getTreeTablePosition().getRow()
+                ).getValue().domainName.set(
+                        t.getNewValue()
+                )
+        );
+        enableFlag.setCellFactory((TreeTableColumn<FXHost, Boolean> param) ->
+                new CheckBoxTreeTableCell<>()
+        );
+        enableFlag.setOnEditCommit((CellEditEvent<FXHost, Boolean> t) ->
+                t.getTreeTableView().getTreeItem(
+                        t.getTreeTablePosition().getRow()
+                ).getValue().enable.set(
+                        t.getNewValue()
+                )
+        );
         final ObservableList<FXHost> dummyData = getLocalHosts();
         hostsDataTable.setRoot(new RecursiveTreeItem<>(dummyData, RecursiveTreeObject::getChildren));
         hostsDataTable.setShowRoot(false);
@@ -188,7 +212,7 @@ public class BaseController {
         this.count = allHosts.size();
         ObservableList<FXHost> fxHosts = FXCollections.observableArrayList();
         for (Host host : allHosts) {
-            fxHosts.add(new FXHost(host.isEnable(),host.getIpAddress(), host.getDomainName()));
+            fxHosts.add(new FXHost(host.isEnable(), host.getIpAddress(), host.getDomainName()));
         }
         return fxHosts;
     }

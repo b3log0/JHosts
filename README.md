@@ -20,14 +20,14 @@
 总之，这是个初步成品，日后慢慢改进吧 :joy: 
 
 ### 主界面：
-![8a674827c5ee492b83e98ab995a6c2f2-image.png](https://img.hacpai.com/file/2017/9/8a674827c5ee492b83e98ab995a6c2f2-image.png) 
+
+![1](https://user-images.githubusercontent.com/2569600/30356233-6416556c-986a-11e7-88f9-61a1b78173dd.png)
 
 ### 查询IP或domain：
-![e637de85812540869ec2afe2fb8ed18e-image.png](https://img.hacpai.com/file/2017/9/e637de85812540869ec2afe2fb8ed18e-image.png) 
+
+![2](https://user-images.githubusercontent.com/2569600/30356234-6440e048-986a-11e7-9ca9-09017e5527ad.png)
 
 ### 保存
-![3a711f23064745878fea2d9a7676a544-image.png](https://img.hacpai.com/file/2017/9/3a711f23064745878fea2d9a7676a544-image.png) 
 
-PS. 从图上能看出一个bug，有没有人能发现，发现者奖励100积分，先到先得呀
-
+![3](https://user-images.githubusercontent.com/2569600/30356235-64460546-986a-11e7-91ec-dadac5ec13cb.png)
 

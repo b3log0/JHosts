@@ -15,7 +15,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import org.b3log.jhosts.controller.AllHostController;
 
 import javax.annotation.PostConstruct;
 

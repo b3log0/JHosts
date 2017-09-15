@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
-import demos.datafx.ExtendedAnimatedFlowContainer;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowHandler;
@@ -15,6 +14,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.b3log.jhosts.datafx.ExtendedAnimatedFlowContainer;
 
 import javax.annotation.PostConstruct;
 

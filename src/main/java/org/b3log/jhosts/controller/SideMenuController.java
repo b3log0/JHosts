@@ -1,77 +1,119 @@
 package org.b3log.jhosts.controller;
 
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXMasonryPane;
+import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.svg.SVGGlyph;
 import io.datafx.controller.ViewController;
-import io.datafx.controller.flow.Flow;
-import io.datafx.controller.flow.FlowException;
-import io.datafx.controller.flow.FlowHandler;
-import io.datafx.controller.flow.action.ActionTrigger;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
-import io.datafx.controller.util.VetoException;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import org.b3log.jhosts.service.FileService;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
-import java.util.Objects;
+import java.util.ArrayList;
+
+import static javafx.animation.Interpolator.EASE_BOTH;
 
 @ViewController(value = "/hxml/ui/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {
     @FXMLViewFlowContext
     private ViewFlowContext context;
-    //TODO 预设五种环境，这些host总会写入到同一个文件中，只不过右侧将对五中环境进行简化显示
     @FXML
-    @ActionTrigger("all")
-    private Label all;
-    @FXML
-    @ActionTrigger("product")
-    private Label product;
-    @FXML
-    @ActionTrigger("uat")
-    private Label uat;
-    @FXML
-    @ActionTrigger("test")
-    private Label test;
-    @FXML
-    @ActionTrigger("local")
-    private Label local;
-    @FXML
-    private JFXListView<Label> sideList;
+    private JFXMasonryPane masonryPane;
 
     /**
      * init fxml when loaded.
      */
     @PostConstruct
     public void init() {
-        Objects.requireNonNull(context, "context");
-        FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
-        sideList.propagateMouseEventsToParent();
-        sideList.getSelectionModel().selectedItemProperty().addListener((o, oldVal, newVal) -> {
-            new Thread(()->{
-                Platform.runLater(()->{
-                    if (newVal != null) {
-                        try {
-                            contentFlowHandler.handle(newVal.getId());
-                        } catch (VetoException exc) {
-                            exc.printStackTrace();
-                        } catch (FlowException exc) {
-                            exc.printStackTrace();
-                        }
-                    }
-                });
-            }).start();
-        });
-        Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
-        bindNodeToController(all, AllHostController.class, contentFlow, contentFlowHandler);
-        bindNodeToController(product, ProdHostController.class, contentFlow, contentFlowHandler);
-        bindNodeToController(uat, UatHostController.class, contentFlow, contentFlowHandler);
-        bindNodeToController(test, TestHostController.class, contentFlow, contentFlowHandler);
-        bindNodeToController(local, LocalHostController.class, contentFlow, contentFlowHandler);
+        ArrayList<Node> children = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            StackPane child = new StackPane();
+            double width = 100;
+            child.setMinWidth(width);
+            child.setMaxWidth(width);
+            child.setPrefWidth(width);
+            double height = 50;
+            child.setMinHeight(height);
+            child.setMaxHeight(height);
+            child.setPrefHeight(height);
+            JFXDepthManager.setDepth(child, 1);
+            children.add(child);
+
+            // create content
+            StackPane header = new StackPane();
+            String headerColor = getDefaultColor(i % 12);
+            header.setStyle("-fx-background-radius: 5 5 5 5; -fx-background-color: " + headerColor);
+            VBox.setVgrow(header, Priority.ALWAYS);
+            VBox content = new VBox();
+            content.getChildren().addAll(header);
+            JFXButton button = new JFXButton();
+            button.setButtonType(JFXButton.ButtonType.RAISED);
+            button.setText("hello alsdjflasjdfl;ajsdfasdfasdfasdfasdf");
+            child.getChildren().addAll(content,button);
+        }
+        masonryPane.getChildren().addAll(children);
     }
-    private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {
-        flow.withGlobalLink(node.getId(), controllerClass);
+
+    private String getDefaultColor(int i) {
+        String color = "#FFFFFF";
+        switch (i) {
+            case 0:
+                color = "#8F3F7E";
+                break;
+            case 1:
+                color = "#B5305F";
+                break;
+            case 2:
+                color = "#CE584A";
+                break;
+            case 3:
+                color = "#DB8D5C";
+                break;
+            case 4:
+                color = "#DA854E";
+                break;
+            case 5:
+                color = "#E9AB44";
+                break;
+            case 6:
+                color = "#FEE435";
+                break;
+            case 7:
+                color = "#99C286";
+                break;
+            case 8:
+                color = "#01A05E";
+                break;
+            case 9:
+                color = "#4A8895";
+                break;
+            case 10:
+                color = "#16669B";
+                break;
+            case 11:
+                color = "#2F65A5";
+                break;
+            case 12:
+                color = "#4E6A9C";
+                break;
+            default:
+                break;
+        }
+        return color;
     }
 }

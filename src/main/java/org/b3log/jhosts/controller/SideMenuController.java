@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -32,6 +33,8 @@ import static javafx.animation.Interpolator.EASE_BOTH;
 public class SideMenuController {
     @FXMLViewFlowContext
     private ViewFlowContext context;
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private JFXMasonryPane masonryPane;
 
@@ -53,7 +56,6 @@ public class SideMenuController {
             child.setPrefHeight(height);
             JFXDepthManager.setDepth(child, 1);
             children.add(child);
-
             // create content
             StackPane header = new StackPane();
             String headerColor = getDefaultColor(i % 12);
@@ -64,9 +66,11 @@ public class SideMenuController {
             JFXButton button = new JFXButton();
             button.setButtonType(JFXButton.ButtonType.RAISED);
             button.setText("hello alsdjflasjdfl;ajsdfasdfasdfasdfasdf");
-            child.getChildren().addAll(content,button);
+            child.getChildren().addAll(content, button);
         }
         masonryPane.getChildren().addAll(children);
+        Platform.runLater(() -> scrollPane.requestLayout());
+        JFXScrollPane.smoothScrolling(scrollPane);
     }
 
     private String getDefaultColor(int i) {

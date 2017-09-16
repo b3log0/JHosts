@@ -4,30 +4,19 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.effects.JFXDepthManager;
-import com.jfoenix.svg.SVGGlyph;
 import io.datafx.controller.ViewController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-
-import static javafx.animation.Interpolator.EASE_BOTH;
 
 @ViewController(value = "/hxml/ui/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {
@@ -47,12 +36,8 @@ public class SideMenuController {
         for (int i = 0; i < 20; i++) {
             StackPane child = new StackPane();
             double width = 100;
-            child.setMinWidth(width);
-            child.setMaxWidth(width);
             child.setPrefWidth(width);
             double height = 50;
-            child.setMinHeight(height);
-            child.setMaxHeight(height);
             child.setPrefHeight(height);
             JFXDepthManager.setDepth(child, 1);
             children.add(child);
@@ -65,12 +50,11 @@ public class SideMenuController {
             content.getChildren().addAll(header);
             JFXButton button = new JFXButton();
             button.setButtonType(JFXButton.ButtonType.RAISED);
-            button.setText("hello alsdjflasjdfl;ajsdfasdfasdfasdfasdf");
+            button.setPrefHeight(height);
+            button.setText("hello alsdjflasjf");
             child.getChildren().addAll(content, button);
         }
         masonryPane.getChildren().addAll(children);
-        Platform.runLater(() -> scrollPane.requestLayout());
-        JFXScrollPane.smoothScrolling(scrollPane);
     }
 
     private String getDefaultColor(int i) {

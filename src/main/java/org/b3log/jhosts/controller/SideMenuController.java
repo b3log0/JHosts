@@ -3,7 +3,6 @@ package org.b3log.jhosts.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.effects.JFXDepthManager;
-import com.jfoenix.svg.SVGGlyph;
 import io.datafx.controller.ViewController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,20 +10,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.apache.commons.io.IOUtils;
-import org.b3log.jhosts.util.GlyphSet;
 
 import javax.annotation.PostConstruct;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 @ViewController(value = "/hxml/ui/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {

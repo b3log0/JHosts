@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @ViewController(value = "/hxml/ui/TreeTableView.fxml", title = "Material Design Example")
-public class BaseController {
+public class HostController {
     protected String title = "Default Hosts";
     private FileService fileService = new FileServiceImpl();
     private static final String PREFIX = "( ";

@@ -29,14 +29,8 @@ public class Main extends Application /*implements CommandLineRunner*/ {
     private ViewFlowContext flowContext;
 
     public static void main(String[] args) {
-//        SpringApplication.run(Main.class,args);
         Main.launch(args);
     }
-
-//    @Override
-//    public void run(String... strings) throws Exception {
-//        Main.launch(strings);
-//    }
 
     private static final String GROUP = "组";
     private static final String IP_ADDRESS = "IP地址";

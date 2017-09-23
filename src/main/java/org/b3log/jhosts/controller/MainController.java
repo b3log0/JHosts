@@ -67,7 +67,7 @@ public final class MainController {
         // create the inner flow and content
         context = new ViewFlowContext();
         // set the default controller
-        Flow innerFlow = new Flow(AllHostController.class);
+        Flow innerFlow = new Flow(HostController.class);
 
         final FlowHandler flowHandler = innerFlow.createHandler(context);
         context.register("ContentFlowHandler", flowHandler);
@@ -81,18 +81,5 @@ public final class MainController {
         final FlowHandler sideMenuFlowHandler = sideMenuFlow.createHandler(context);
         drawer.setSidePane(sideMenuFlowHandler.start(new ExtendedAnimatedFlowContainer(containerAnimationDuration,
                 SWIPE_LEFT)));
-    }
-
-    public static final class InputController {
-        @FXML
-        private JFXListView<?> toolbarPopupList;
-
-        // close application
-        @FXML
-        private void submit() {
-            if (toolbarPopupList.getSelectionModel().getSelectedIndex() == 1) {
-                Platform.exit();
-            }
-        }
     }
 }

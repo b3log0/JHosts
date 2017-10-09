@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Host {
+    private int line;
     private boolean enable;
     private String ipAddress;
     private String domainName;

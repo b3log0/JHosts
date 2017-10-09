@@ -110,7 +110,8 @@ public class FileServiceImpl implements FileService {
         Pattern pattern = Pattern.compile(IP_ADDRESS_REG);
         for (int i = 0; i < lines.size(); i++) {
             Matcher m = pattern.matcher(lines.get(i));
-            if (m.find()) {
+            //有IP地址并且只有IP Domain信息的为配置行
+            if (m.find() && lines.get(i).split(" ").length == 2) {
                 Boolean flag = !lines.get(i).trim().startsWith("#");
                 String ipAddress = m.group();
                 String domainName = lines.get(i).split("\\s+")[1]; //假定hosts文件格式是规范的（应当通过format进行初始化）

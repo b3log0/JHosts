@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Author: Zhang Yu
  * Date: 17年9月6日
@@ -19,6 +22,7 @@ public class Host {
     private boolean enable;
     private String ipAddress;
     private String domainName;
+    private Set<String> labels;
 
     @Override
     public boolean equals(Object obj) {
